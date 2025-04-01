@@ -1,0 +1,7 @@
+# LSP
+.ccls-cache/
+
+# C Build Artifacts
+*.o
+*.d
+tictactoe
