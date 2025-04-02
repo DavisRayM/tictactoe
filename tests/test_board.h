@@ -64,7 +64,7 @@ void test_board_valid_moves(void) {
   int numMoves = 0;
   initialize_board(&board);
 
-  moves = valid_moves(&board, &numMoves);
+  moves = valid_moves(board.state, &numMoves);
 
   CU_ASSERT(numMoves == BOARDSIZE);
   CU_ASSERT(moves != NULL);
@@ -78,7 +78,7 @@ void test_board_valid_moves(void) {
   free(moves);
 
   moves = NULL;
-  moves = valid_moves(&board, &numMoves);
+  moves = valid_moves(board.state, &numMoves);
 
   CU_ASSERT(numMoves == BOARDSIZE - 1);
   CU_ASSERT(moves != NULL);
@@ -93,10 +93,10 @@ void test_board_valid_moves(void) {
 
   free(moves);
   for (int i = 0; i < BOARDSIZE; i++)
-      board.state[i] = CIRCLE;
+    board.state[i] = CIRCLE;
 
   moves = NULL;
-  moves = valid_moves(&board, &numMoves);
+  moves = valid_moves(board.state, &numMoves);
 
   CU_ASSERT(numMoves == 0);
   CU_ASSERT(moves == NULL);

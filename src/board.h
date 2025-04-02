@@ -60,12 +60,12 @@ enum TokenType current_player(struct Board *board);
  * Returns the current winner of the game if any
  * otherwise returns a TokenType::Empty
  */
-enum TokenType is_game_over(struct Board *board);
+enum TokenType game_winner(BoardState state);
 
 /*
  * Returns a list of valid player moves for the current generation.
  */
-struct PlayerMove *valid_moves(struct Board *board, int *numMoves);
+struct PlayerMove *valid_moves(BoardState state, int *numMoves);
 
 /*
  * Performs the user specified move and returns the new state.
