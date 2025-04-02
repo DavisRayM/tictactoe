@@ -1,7 +1,11 @@
 # LSP
 .ccls-cache/
 
+# Test artifacts
+*.txt
+
 # C Build Artifacts
 *.o
 *.d
 tictactoe
+test

@@ -1,19 +1,24 @@
 CC?=gcc
-CFLAGS?=
+CFLAGS?=-Wall -Wextra -g
+TEST_CFLAGS?=-lcunit
 SRC_DIR?=src
+TEST_DIR?=tests
 
 OBJS:=\
 $(SRC_DIR)/main.o\
-$(SRC_DIR)/ui.o\
 $(SRC_DIR)/board.o\
 
-.PHONY: all clean
+TEST_OBJS:=\
+$(TEST_DIR)/test.o\
+$(SRC_DIR)/board.o\
+
+.PHONY: all clean test
 .SUFFIXES: .o .c .h
 
 all: tictactoe
 
 tictactoe: $(OBJS)
-	$(CC) -o $@ $(CFLAGS) $(SRC_DIR)/main.o $(SRC_DIR)/board.o
+	$(CC) -o $@ $(CFLAGS) $(OBJS)
 
 .c.o:
 	$(CC) -MD -c $< -o $@ $(CFLAGS)
@@ -22,4 +27,8 @@ tictactoe: $(OBJS)
 	$(CC) -MD -c $< -o $@ $(CFLAGS)
 
 clean:
-	rm -rf tictactoe */*.d */*.o
+	rm -rf tictactoe test */*.d */*.o
+
+test: $(TEST_OBJS)
+	$(CC) -o $@ $(TEST_CFLAGS) $(TEST_OBJS)
+	./$@
