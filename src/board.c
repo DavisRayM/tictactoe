@@ -40,14 +40,14 @@ BoardState update_state(struct Board *board, BoardState state) {
 
 char player_token(enum TokenType token) {
   switch (token) {
-  case EMPTY:
-    return ' ';
-    break;
   case CIRCLE:
     return 'O';
     break;
   case X:
     return 'X';
+    break;
+  default:
+    return ' ';
     break;
   }
 }

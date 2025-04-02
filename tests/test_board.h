@@ -53,8 +53,8 @@ void test_player_token(void) {
 }
 
 int register_boardtests(CU_pSuite suite) {
-  if ((NULL ==
-       CU_add_test(suite, "test of board initialize_board()", test_board_init)) ||
+  if ((NULL == CU_add_test(suite, "test of board initialize_board()",
+                           test_board_init)) ||
       (NULL == CU_add_test(suite, "test of board current_player()",
                            test_board_currentplayer)) ||
       (NULL ==
