@@ -27,7 +27,7 @@ tictactoe: $(OBJS)
 	$(CC) -MD -c $< -o $@ $(CFLAGS)
 
 clean:
-	rm -rf tictactoe test */*.d */*.o
+	rm -rf tictactoe test */*.d */*.o *.txt
 
 test: $(TEST_OBJS)
 	$(CC) -o $@ $(TEST_OBJS) $(TEST_CFLAGS)
