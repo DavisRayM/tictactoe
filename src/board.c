@@ -1,4 +1,5 @@
 #include "board.h"
+#include <stdbool.h>
 #include <stdlib.h>
 
 static void clone_state(BoardState a, BoardState b) {
@@ -41,7 +42,62 @@ enum TokenType current_player(struct Board *board) {
   }
 }
 
-enum TokenType game_winner(BoardState state) { return EMPTY; }
+enum TokenType game_winner(BoardState state) {
+  enum TokenType prev;
+  enum TokenType winner = EMPTY;
+
+  /* Check rows for any winner */
+  for (int x = 0; x < 3 && winner == EMPTY; x++) {
+    prev = state[x * 3 + 0];
+    winner = prev;
+
+    for (int y = 1; y < 3; y++) {
+      if (prev != state[x * 3 + y]) {
+        winner = EMPTY;
+        break;
+      }
+    }
+  }
+
+  /* Check columns for any winner */
+  for (int y = 0; y < 3 && winner == EMPTY; y++) {
+    prev = state[y];
+    winner = prev;
+
+    for (int x = 1; x < 3; x++) {
+      if (prev != state[x * 3 + y]) {
+        winner = EMPTY;
+        break;
+      }
+    }
+  }
+
+  /* Check Left-Right Diagonal for any winner */
+  if (winner == EMPTY) {
+    prev = state[0];
+    winner = prev;
+    for (int x = 1, y = 1; x < 3 && y < 3; x++, y++) {
+      if (prev != state[x * 3 + y]) {
+        winner = EMPTY;
+        break;
+      }
+    }
+  }
+
+  /* Check Right-Left Diagonal for any winner */
+  if (winner == EMPTY) {
+    prev = state[2];
+    winner = prev;
+    for (int x = 2, y = 2; x >= 0 && y >= 0; x--, y--) {
+      if (prev != state[x * 3 + y]) {
+        winner = EMPTY;
+        break;
+      }
+    }
+  }
+
+  return winner;
+}
 
 struct PlayerMove *valid_moves(BoardState state, int *numMoves) {
   *numMoves = 0;
