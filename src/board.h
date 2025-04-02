@@ -47,6 +47,11 @@ void initialize_board(struct Board *board);
 void free_board(struct Board *board);
 
 /*
+ * Creates a player move
+ */
+struct PlayerMove create_move(int x, int y);
+
+/*
  * Return current player for the current board generation.
  */
 enum TokenType current_player(struct Board *board);
@@ -60,12 +65,12 @@ enum TokenType is_game_over(struct Board *board);
 /*
  * Returns a list of valid player moves for the current generation.
  */
-struct PlayerMove *valid_moves(struct Board *board);
+struct PlayerMove *valid_moves(struct Board *board, int *numMoves);
 
 /*
  * Performs the user specified move and returns the new state.
  */
-BoardState make_move(struct Board *board, struct PlayerMove *move);
+BoardState make_move(struct Board *board, struct PlayerMove move);
 
 /*
  * Updates the current board state to the newest state. Returns the previous
