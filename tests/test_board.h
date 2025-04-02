@@ -46,11 +46,19 @@ void test_board_currentplayer(void) {
   free_board(&board);
 }
 
+void test_player_token(void) {
+  CU_ASSERT(' ' == player_token(EMPTY));
+  CU_ASSERT('O' == player_token(CIRCLE));
+  CU_ASSERT('X' == player_token(X));
+}
+
 int register_boardtests(CU_pSuite suite) {
   if ((NULL ==
-       CU_add_test(suite, "test of board initializer", test_board_init)) ||
+       CU_add_test(suite, "test of board initialize_board()", test_board_init)) ||
       (NULL == CU_add_test(suite, "test of board current_player()",
-                           test_board_currentplayer))) {
+                           test_board_currentplayer)) ||
+      (NULL ==
+       CU_add_test(suite, "test of board player_token()", test_player_token))) {
     return -1;
   }
   return 0;
