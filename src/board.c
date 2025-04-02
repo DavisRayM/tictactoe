@@ -1,10 +1,20 @@
 #include "board.h"
 #include <stdlib.h>
 
-void initialize_board(struct Board *board) {
-  board->state = (BoardState)malloc(sizeof(enum TokenType) * BOARDSIZE);
+static void clone_state(BoardState a, BoardState b) {
   for (int i = 0; i < BOARDSIZE; i++)
-    board->state[i] = EMPTY;
+    b[i] = a[i];
+}
+
+static BoardState create_state() {
+  BoardState state = (BoardState)malloc(sizeof(enum TokenType) * BOARDSIZE);
+  for (int i = 0; i < BOARDSIZE; i++)
+    state[i] = EMPTY;
+  return state;
+}
+
+void initialize_board(struct Board *board) {
+  board->state = create_state();
   board->gen = 1;
 }
 
@@ -31,16 +41,16 @@ enum TokenType current_player(struct Board *board) {
   }
 }
 
-enum TokenType is_game_over(struct Board *board) { return EMPTY; }
+enum TokenType game_winner(BoardState state) { return EMPTY; }
 
-struct PlayerMove *valid_moves(struct Board *board, int *numMoves) {
+struct PlayerMove *valid_moves(BoardState state, int *numMoves) {
   *numMoves = 0;
   for (int i = 0; i < BOARDSIZE; i++)
-    if (board->state[i] == EMPTY)
+    if (state[i] == EMPTY)
       *numMoves += 1;
 
   if (*numMoves == 0)
-      return NULL;
+    return NULL;
 
   struct PlayerMove *moves =
       (struct PlayerMove *)malloc(sizeof(struct PlayerMove) * (*numMoves));
@@ -48,7 +58,7 @@ struct PlayerMove *valid_moves(struct Board *board, int *numMoves) {
   int i = 0;
   int j = 0;
   while (i < *numMoves && j < BOARDSIZE) {
-    if (board->state[j] == EMPTY) {
+    if (state[j] == EMPTY) {
       moves[i++] = create_move(j / 3, j % 3);
     }
     j++;
@@ -58,12 +68,18 @@ struct PlayerMove *valid_moves(struct Board *board, int *numMoves) {
 }
 
 BoardState make_move(struct Board *board, struct PlayerMove move) {
-  return board->state;
+  BoardState new_state = create_state();
+
+  clone_state(board->state, new_state);
+  new_state[move.x * 3 + move.y] = current_player(board);
+
+  return new_state;
 }
 
 BoardState update_state(struct Board *board, BoardState state) {
   BoardState temp = board->state;
   board->state = state;
+  board->gen += 1;
   return temp;
 }
 
