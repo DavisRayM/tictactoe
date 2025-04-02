@@ -1,5 +1,10 @@
+#include "ui.h"
+#include "board.h"
 #include <stdio.h>
 
 int main(void) {
-    printf("Hello world!\n");
+    struct Board board;
+    initialize_board(&board);
+    draw_board(&board);
+    return 0;
 }
