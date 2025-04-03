@@ -2,9 +2,12 @@
 #define _TICTACTOE_UI_H 1
 
 #include "board.h"
+#include "opponent.h"
+#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 /*
  * Draws the current board state on the screen.
@@ -30,20 +33,25 @@ void draw_board(struct Board *board) {
  */
 void clear_screen() { printf("\e[1;1H\e[2J"); }
 
+static void apply_move(struct Board *board, struct PlayerMove move) {
+  free(update_state(board, make_move(board, move)));
+  clear_screen();
+  draw_board(board);
+}
+
 /*
  * Requests the user to select a valid move. Returns a non-zero code if function
  * is unable to request user for input; Which currently occurs if no valid move
  * is present in the current board state.
  */
-int request_player_move(struct Board *board, struct PlayerMove *move) {
-  int numMoves = moves_left(board->state);
-  struct PlayerMove *moves = NULL;
-
-  if (numMoves == 0) {
+int request_player_move(struct Board *board) {
+  if (current_state(board->state) != UNDECIDED) {
     return 1;
   }
 
-  moves = valid_moves(board->state);
+  struct PlayerMove move;
+  int numMoves = moves_left(board->state);
+  struct PlayerMove *moves = valid_moves(board->state);
 
   printf("Valid moves:\n");
   for (int i = 0; i < numMoves; i++) {
@@ -57,7 +65,7 @@ int request_player_move(struct Board *board, struct PlayerMove *move) {
     scanf("%d", &input);
 
     if (input > 0 && input <= numMoves) {
-      *move = moves[--input];
+      move = moves[--input];
       break;
     }
 
@@ -65,7 +73,43 @@ int request_player_move(struct Board *board, struct PlayerMove *move) {
   }
 
   free(moves);
+  apply_move(board, move);
+  return 0;
+}
 
+/*
+ * Requests the AI opponent to make a move; This function may take a while...
+ */
+int request_opponent_move(struct Board *board) {
+  if (current_state(board->state) != UNDECIDED) {
+    return 1;
+  }
+
+  int score;
+  struct PlayerMove move;
+  int bestScore = INT_MIN;
+  int depth = 0;
+  int numMoves = moves_left(board->state);
+  enum TokenType opponentToken = current_player(board);
+  struct PlayerMove *moves = valid_moves(board->state);
+
+  printf("Computer is thinking...\n");
+
+  for (int i = 0; i < numMoves; i++) {
+    BoardState old_state = update_state(board, make_move(board, moves[i]));
+    score = minimax(board, &depth, true, opponentToken);
+    if (score > bestScore) {
+      bestScore = score;
+      move = moves[i];
+    }
+    free(update_state(board, old_state));
+  }
+
+  free(moves);
+  printf("Searched %d steps ahead... Making a move now.\n",
+         depth);
+  sleep(2);
+  apply_move(board, move);
   return 0;
 }
 
