@@ -158,3 +158,25 @@ char player_token(enum TokenType token) {
     break;
   }
 }
+
+enum GameState current_state(BoardState state) {
+  if (moves_left(state) == 0) {
+    switch (game_winner(state)) {
+    case EMPTY:
+      return DRAW;
+      break;
+    default:
+      return PLAYERWIN;
+      break;
+    }
+  }
+
+  switch (game_winner(state)) {
+  case EMPTY:
+    return UNDECIDED;
+    break;
+  default:
+    return PLAYERWIN;
+    break;
+  }
+}

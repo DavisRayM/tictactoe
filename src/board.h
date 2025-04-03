@@ -15,6 +15,15 @@ enum TokenType {
 };
 
 /*
+ * Game state type. Represents the current state of the game.
+ */
+enum GameState {
+  UNDECIDED,
+  DRAW,
+  PLAYERWIN,
+};
+
+/*
  * State of a TicTacToe Board; A linear array representing all the
  * 9 slots of a tic tac toe board. Index: (x * 3 + y)
  */
@@ -55,6 +64,11 @@ struct PlayerMove create_move(int x, int y);
  * Return current player for the current board generation.
  */
 enum TokenType current_player(struct Board *board);
+
+/*
+ * Returns the current board game state.
+ */
+enum GameState current_state(BoardState state);
 
 /*
  * Returns the current winner of the game if any
