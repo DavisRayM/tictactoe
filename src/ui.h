@@ -52,7 +52,8 @@ int request_player_move(struct Board *board, struct PlayerMove *move) {
 
   while (true) {
     int input = -1;
-    printf("\n(Player %c) Select a move: ", player_token(current_player(board)));
+    printf("\n(Player %c) Select a move: ",
+           player_token(current_player(board)));
     scanf("%d", &input);
 
     if (input > 0 && input <= numMoves) {
