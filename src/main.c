@@ -23,12 +23,12 @@ int main(void) {
   clear_screen();
   draw_board(&board);
   switch ((winner = game_winner(board.state))) {
-    case EMPTY:
-      printf("The game has ended in a tie!\n");
-      break;
-    default:
-      printf("The '%c' player has won!\n", player_token(winner));
-      break;
+  case EMPTY:
+    printf("The game has ended in a tie!\n");
+    break;
+  default:
+    printf("The '%c' player has won!\n", player_token(winner));
+    break;
   }
 
   return 0;
