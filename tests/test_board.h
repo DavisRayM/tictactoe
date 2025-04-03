@@ -67,10 +67,12 @@ void test_player_token(void) {
 void test_valid_moves(void) {
   struct Board board;
   struct PlayerMove *moves = NULL;
-  int numMoves = 0;
+  int numMoves;
+
   initialize_board(&board);
 
-  moves = valid_moves(board.state, &numMoves);
+  numMoves = moves_left(board.state);
+  moves = valid_moves(board.state);
 
   CU_ASSERT(numMoves == BOARDSIZE);
   CU_ASSERT(moves != NULL);
@@ -84,7 +86,8 @@ void test_valid_moves(void) {
   free(moves);
 
   moves = NULL;
-  moves = valid_moves(board.state, &numMoves);
+  numMoves = moves_left(board.state);
+  moves = valid_moves(board.state);
 
   CU_ASSERT(numMoves == BOARDSIZE - 1);
   CU_ASSERT(moves != NULL);
@@ -102,7 +105,8 @@ void test_valid_moves(void) {
     board.state[i] = CIRCLE;
 
   moves = NULL;
-  moves = valid_moves(board.state, &numMoves);
+  numMoves = moves_left(board.state);
+  moves = valid_moves(board.state);
 
   CU_ASSERT(numMoves == 0);
   CU_ASSERT(moves == NULL);
@@ -151,11 +155,12 @@ void test_make_move() {
   struct PlayerMove *moves = NULL;
   BoardState new_state = NULL;
   enum TokenType player = EMPTY;
-  int numMoves = 0;
+  int numMoves;
   int idx = 0;
 
   initialize_board(&board);
-  moves = valid_moves(board.state, &numMoves);
+  numMoves = moves_left(board.state);
+  moves = valid_moves(board.state);
 
   CU_ASSERT(numMoves != 0);
 
