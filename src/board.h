@@ -65,7 +65,13 @@ enum TokenType game_winner(BoardState state);
 /*
  * Returns a list of valid player moves for the current generation.
  */
-struct PlayerMove *valid_moves(BoardState state, int *numMoves);
+struct PlayerMove *valid_moves(BoardState state);
+
+/*
+ * Returns the number of moves left; Should be called to figure out
+ * the size of the array returned by `valid_moves`.
+ */
+int moves_left(BoardState state);
 
 /*
  * Performs the user specified move and returns the new state.

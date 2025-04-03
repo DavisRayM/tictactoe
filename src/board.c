@@ -99,21 +99,27 @@ enum TokenType game_winner(BoardState state) {
   return winner;
 }
 
-struct PlayerMove *valid_moves(BoardState state, int *numMoves) {
-  *numMoves = 0;
+int moves_left(BoardState state) {
+  int result = 0;
+
   for (int i = 0; i < BOARDSIZE; i++)
     if (state[i] == EMPTY)
-      *numMoves += 1;
+      result += 1;
 
-  if (*numMoves == 0)
+  return result;
+}
+
+struct PlayerMove *valid_moves(BoardState state) {
+  int numMoves = moves_left(state);
+  if (numMoves == 0)
     return NULL;
 
   struct PlayerMove *moves =
-      (struct PlayerMove *)malloc(sizeof(struct PlayerMove) * (*numMoves));
+      (struct PlayerMove *)malloc(sizeof(struct PlayerMove) * (numMoves));
 
   int i = 0;
   int j = 0;
-  while (i < *numMoves && j < BOARDSIZE) {
+  while (i < numMoves && j < BOARDSIZE) {
     if (state[j] == EMPTY) {
       moves[i++] = create_move(j / 3, j % 3);
     }
