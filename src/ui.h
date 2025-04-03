@@ -106,8 +106,7 @@ int request_opponent_move(struct Board *board) {
   }
 
   free(moves);
-  printf("Searched %d steps ahead... Making a move now.\n",
-         depth);
+  printf("Searched %d steps ahead... Making a move now.\n", depth);
   sleep(2);
   apply_move(board, move);
   return 0;
