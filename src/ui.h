@@ -97,7 +97,7 @@ int request_opponent_move(struct Board *board) {
 
   for (int i = 0; i < numMoves; i++) {
     BoardState old_state = update_state(board, make_move(board, moves[i]));
-    score = minimax(board, &depth, true, opponentToken);
+    score = minimax(board, &depth, false, opponentToken);
     if (score > bestScore) {
       bestScore = score;
       move = moves[i];
