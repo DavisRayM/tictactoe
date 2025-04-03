@@ -26,3 +26,5 @@ The game has a few tests implemented; mostly for the board representation. In ca
 ```sh
 make test
 ```
+
+**NOTE**: Testing requires the CUnit library
