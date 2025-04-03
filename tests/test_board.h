@@ -195,6 +195,22 @@ void test_update_state() {
       CU_ASSERT(board.state[x * 3 + y] == new_state[x * 3 + y]);
 }
 
+void test_current_state() {
+  enum TokenType ongoing[] = {
+      CIRCLE, X, CIRCLE, CIRCLE, EMPTY, X, X, CIRCLE, CIRCLE,
+  };
+  enum TokenType draw[] = {
+      CIRCLE, X, CIRCLE, CIRCLE, X, X, X, CIRCLE, CIRCLE,
+  };
+  enum TokenType playerwin[] = {
+      CIRCLE, X, CIRCLE, CIRCLE, CIRCLE, X, X, X, CIRCLE,
+  };
+
+  CU_ASSERT(current_state(ongoing) == UNDECIDED);
+  CU_ASSERT(current_state(draw) == DRAW);
+  CU_ASSERT(current_state(playerwin) == PLAYERWIN);
+}
+
 int register_boardtests(CU_pSuite suite) {
   if ((NULL ==
        CU_add_test(suite, "test of board initialize_board()", test_init)) ||
@@ -209,7 +225,9 @@ int register_boardtests(CU_pSuite suite) {
       (NULL ==
        CU_add_test(suite, "test of board make_move()", test_make_move)) ||
       (NULL ==
-       CU_add_test(suite, "test of board update_state()", test_update_state))) {
+       CU_add_test(suite, "test of board update_state()", test_update_state)) ||
+      (NULL == CU_add_test(suite, "test of board current_state()",
+                           test_current_state))) {
     return -1;
   }
   return 0;
